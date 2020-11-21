@@ -1,0 +1,336 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+body{
+    background: #eeeeee;
+}
+.logo
+{
+  
+  margin: 10px 10px 1px 10px;
+
+}
+.logo img{
+  width:100px;
+  background-color :#fff !important;
+}
+.mat-divider {
+  
+  margin-top: -7px;
+}
+h2
+{
+  background-color: #b22028;
+	color: #fff;
+  padding: 10px 0px 10px 10px;   
+   border-radius: 7px;
+   font-size:16px;
+
+}
+.h5{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+ 
+.card {
+    margin-top: 8px;
+}
+.topmargin
+{
+  margin-top : -16px;
+}
+.example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+  }
+  
+  .example-full-width {
+    width: 100%;
+  }
+
+  .example-container {
+    display: flex;
+    flex-direction: column;
+    /*margin: 15px 50px 0px 50px;*/
+  }
+  
+  .example-container > * {
+    width: 100%;
+  }
+
+  /*form */
+  .mat-card {    
+    text-align: -webkit-center;    
+}    
+
+.mat-form-field {
+  
+  margin-left: 5px;
+}
+
+.specailMatcard  {
+  width: auto;
+  margin: 4px;
+  box-shadow: none !important;
+  border-bottom: 1px solid #ccc; 
+}
+.demo-toolbar {    
+    display: flex;    
+    align-items: center;    
+    width: 100%;    
+}    
+    
+.nada-form {    
+    min-width: 150px;    
+    max-width: 500px;    
+    width: 100%;    
+}    
+    
+.full-width {    
+    width: 100%;    
+}    
+    
+body {    
+    margin: 0;    
+    font-family: Roboto, sans-serif;    
+}    
+  .homeCard
+  {
+    width: 1200px;
+    text-align: right;
+    text-align: right; 
+    background: none; 
+    border-radius: 0; 
+    box-shadow: none !important; 
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  .button-row button,
+.button-row a {
+  margin-right: 8px;
+}
+mat-card {    
+    max-width: 80%;    
+    margin: 0.5em auto;    
+    text-align: center;    
+}    
+    
+mat-toolbar-row {    
+    justify-content: space-between;    
+}    
+    
+.done {    
+    position: fixed;    
+    bottom: 20px;    
+    right: 20px;    
+    color: white;    
+}    
+    
+.content-center {    
+    text-align: -webkit-center;    
+}    
+
+
+.left
+{
+  text-align: left;
+ 
+}
+
+.leftCard
+{
+  margin-left: 1px;
+}
+
+.example-radio-group {
+  display: flex;
+  /*flex-direction: column;
+  margin: 15px 0;*/
+}
+.radiowithText
+{
+  margin-top: -15px;
+}
+mat-list.mat-list.mat-list-base.ng-star-inserted {
+  margin-bottom: 20px;
+  margin-top: 25px;
+}
+.example-radio-button {
+  margin: 5px;
+}
+ 
+.buttonHolder{ text-align: center; margin: 10px; }
+
+.mat-radio-button
+{
+  display: flex !important;
+  /*padding-bottom:1.25em;*/
+}
+.input-row
+{
+  justify-content: left !important;
+  text-align: left;
+
+}
+.addSection
+{
+  margin-bottom:  10px;
+}
+.wrapper {
+  border: 2px dotted rgb(96, 139, 168);
+  width: 500px;
+}
+.box {
+
+  display: flex;
+  flex-wrap: wrap;
+  margin:-10p
+}
+.box>* {
+  flex: 1 1 160px;
+  margin: 10px;
+}
+
+
+.flex {
+  -webkit-flex: 1 1 0%;
+      -ms-flex: 1 1 0%;
+          flex: 1 1 0%;
+  box-sizing: border-box;
+}
+.flex-20 {
+  -webkit-flex: 1 1 20%;
+      -ms-flex: 1 1 20%;
+          flex: 1 1 20%;
+  max-width: 20%;
+  max-height: 100%;
+  box-sizing: border-box;
+}
+
+.layout-row .flex-33 {
+  -webkit-flex: 1 1 calc(100% / 3);
+      -ms-flex: 1 1 calc(100% / 3);
+          flex: 1 1 calc(100% / 3);
+  box-sizing: border-box;
+}
+
+.layout-row  .flex-66 {
+  -webkit-flex: 1 1 calc(200% / 3);
+      -ms-flex: 1 1 calc(200% / 3);
+          flex: 1 1 calc(200% / 3);
+  box-sizing: border-box;
+}
+
+.layout-row .flex-33 {
+  max-width: calc(100% / 3);
+  max-height: 100%;
+}
+
+.layout-row  .flex-66 {
+  max-width: calc(200% / 3);
+  max-height: 100%;
+}
+
+.layout-column .flex-33 {
+  max-width: 100%;
+  max-height: calc(100% / 3);
+}
+
+.layout-column  .flex-66 {
+  max-width: 100%;
+  max-height: calc(200% / 3);
+}
+
+.mat-drawer-container {
+  display: contents !important;
+}
+ 
+.sidenav button{
+  width: 100%;
+  text-align: left;
+}
+
+.sidenav .mat-icon
+{
+  margin: 0 32px 0 0;
+}
+
+
+.cardList
+{
+  text-align: left;
+  width: 50%;
+}
+
+.mat-toolbar.mat-primary
+{
+  background: #b22028 !important;
+}
+.spacer {
+  flex: 1 1 auto;
+}
+
+.container {
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+}
+
+.container .mat-drawer {
+  min-width:200px;
+}
+
+.container .mat-drawer .mat-button {
+  display:block;
+  width:100%;
+  text-align:left;
+} 
+.spacer {
+  flex: 1 1 auto;
+}
+.mat-drawer-container {
+display: contents !important;
+}
+
+.switch {
+position: relative;
+display: inline-block;
+width: 90px;
+height: 34px;
+}
+
+.pading_card {
+  padding: 10px;
+}
+
+.submission
+{
+  margin-top: 20px;
+}
+
+.flex-container {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  -ms-box-orient: horizontal;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -moz-flex;
+  display: -webkit-flex;
+  display: flex; 
+}
+
+.wrap  { 
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+
+
+.mat-list-base .mat-list-item, .mat-list-base .mat-list-option
+{
+  width: auto !important;
+}

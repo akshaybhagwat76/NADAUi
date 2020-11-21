@@ -1,0 +1,8 @@
+{
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}"
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/fa185160-bff3-47bd-a433-f6377e1e7fcf/resourceGroups/ShowGroup/providers/Microsoft.Web/sites/meetingslive",
+    "appService.deploySubpath": ""
+}

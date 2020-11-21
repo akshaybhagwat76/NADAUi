@@ -1,0 +1,764 @@
+
+  
+ <!-- <section fxLayout="column">-->
+ <mat-card class="card">
+   <mat-card-title>
+     <h2 mat-header style="text-align: center;">NADA Meeting Request Form</h2>
+   </mat-card-title>
+
+   <form [formGroup]="convFormControl" (ngSubmit)="SaveChanges(convFormControl.value)" autocomplete="off">
+     <div class="example-container ">
+   
+          
+       <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="10px" fxLayoutGap.lt-md="0px">
+         <mat-form-field fxFlex>
+           <input matInput placeholder="Name of Meeting" required formControlName="NameOfMeeting" />
+         </mat-form-field>
+         <mat-form-field fxFlex>
+           <input matInput placeholder="mm/dd/yyyy – mm/dd/yyyy" required formControlName="MeetingDates" />
+         </mat-form-field>
+         <mat-form-field fxFlex>
+           <input matInput placeholder="Staff Contact" required formControlName="StaffContact" />
+         </mat-form-field>
+         <mat-form-field fxFlex>
+           <input matInput placeholder="Attendance (incl. staff)" required formControlName="Attendance" type="number" />
+         </mat-form-field>
+       </div>
+       <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+         <h4>Meeting agenda provided?</h4>
+         <mat-radio-group aria-label="Select an option" formControlName="selectedAgenda" class="example-radio-group"
+           layout="row">
+           <mat-radio-button class="example-radio-button" [value]="order.id"
+             *ngFor="let order of MeetingAgenda; let i = index"> {{order.name}}
+           </mat-radio-button>
+         </mat-radio-group>
+
+
+         <mat-form-field fxFlex class="full-width">
+           <input matInput [matDatepicker]="picker" placeholder="Date Meetings will receive agenda"
+             formControlName="MeetingAgendaDate">
+           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+           <mat-datepicker #picker></mat-datepicker>
+         </mat-form-field>
+       </div>
+       <!-- <mat-grid-list cols="2" fxFlex>
+         <mat-grid-tile class="left">   </mat-grid-tile>   <mat-grid-tile> </mat-grid-tile>
+
+
+        </mat-grid-list>
+      -->
+       <div class="input-row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="10px">
+         <h4>Attendee List (incl. staff) provided?</h4>
+         <mat-radio-group class="example-radio-group " aria-label="Select an option"
+           formControlName="selectedAttendeeList" layout="row">
+           <mat-radio-button class="example-radio-button" [value]="order.id"
+             *ngFor="let order of AttendeeList; let i = index" name="AttendeeList"> {{order.name}}
+           </mat-radio-button>
+
+         </mat-radio-group>
+
+         <mat-form-field fxFlex>
+           <input matInput [matDatepicker]="picker2" placeholder="Date Meetings  will receive" matTextareaAutosize
+             formControlName="AttendeeListDate">
+           <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+           <mat-datepicker #picker2></mat-datepicker>
+         </mat-form-field>
+       </div>
+
+       <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+         <h4 class="left marginText">Select Meeting Location
+         </h4>
+         <mat-radio-group class="example-radio-group left" aria-label="Select Meeting Location"
+           formControlName="selectedMeetingLocations">
+           <mat-radio-button #order.id [value]="order.id" class="example-radio-button"
+             *ngFor="let order of MeetingLocations; let i = index" name="MeetingLocations"
+             (change)="radioChange($event)">
+             {{order.name}}</mat-radio-button>
+
+         </mat-radio-group>
+
+         <span *ngIf="servicesNeeded===true" class="left">
+           <h4 class="left full-width">Services Needed
+           </h4>
+           <mat-divider></mat-divider>
+           <mat-form-field fxFlex>
+           <mat-select formControlName="selectedservicesNeeded" 
+                class="left full-width"
+                (selectionChange)="filterservicesNeeded($event)">
+               <mat-option *ngFor="let order of servicesNeededList" 
+               [value]="order.id">
+                 {{order.name}}
+               </mat-option>
+             </mat-select>
+           </mat-form-field>
+         </span>
+       </div>
+ {{selectedservicesNeededByUser}}
+       <mat-divider></mat-divider>
+
+       <div id="divHotelReservations" class="left"  *ngIf="selectedservicesNeededByUser==='Hotel Rooms' || selectedservicesNeededByUser==='Hotel Room & Catering' || selectedservicesNeededByUser==='Offsite'" >
+         <h4 class="left marginText" mat-subtitle>Hotel Reservations
+         </h4>
+
+         <div class="input-row" fxLayout="row" fxLayout.lt-md="coloumn" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+
+           <span>
+             <h5 class="left">Hotel Location
+             </h5>
+             <mat-form-field fxFlex>
+               <mat-select formControlName="selectedHotelReservations" 
+               (selectionChange)="filterHotels($event)">
+                 <mat-option *ngFor="let order of HotelReservationList" [value]="order.id">
+                   {{order.name}}
+                 </mat-option>
+               </mat-select>
+             </mat-form-field>
+           </span>
+           <span *ngIf="selectedOtherHotel===true">
+
+             <mat-form-field fxFlex>
+               <input matInput placeholder="Name of Other location(s)" *ngIf="selectedOtherHotel===true" id="otherHotel"
+                 required formControlName="selectedHotelReservations" />
+             </mat-form-field>
+           </span>
+           <span>
+             <br />
+             <br />
+             <h5 class="left">Type of Hotel
+             </h5>
+             <mat-form-field fxFlex>
+               <mat-select formControlName="selectedTypeOfHotel">
+                 <mat-option *ngFor="let order of TypeOfHotelList" [value]="order.id">
+                   {{order.name}}
+                 </mat-option>
+               </mat-select>
+             </mat-form-field>
+
+           </span>
+
+         </div>
+
+         <div class="input-row" fxLayout="column" fxLayout.lt-md="coloumn" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+
+            <h4 class="left marginText" mat-subtitle>Sleeping Room Requirements</h4>
+
+           <table class="example-full-width" cellspacing="0">
+             <thead>
+
+               <button mat-raised-button color="primary" class="right" (click)="onAddRow()"
+                 *ngIf="convFormControl.get('RoomReqiurements')">Add Sleeping Room Requirements</button>
+
+             </thead>
+             <tr *ngFor="let row of convFormControl.get('RoomReqiurements')?.controls;let index = index;">
+               <td>
+
+                 <mat-form-field>
+                   <input matInput [formControl]="row.get('Day')" placeholder="Day">
+                 </mat-form-field>
+               </td>
+               <td>
+                 <mat-form-field>
+                   <input matInput [formControl]="row.get('Date')" placeholder="Date" type="date">
+
+                 </mat-form-field>
+               </td>
+               <td>
+                 <mat-form-field>
+                   <input matInput [formControl]="row.get('RoomsNeeded')" placeholder=" Number of Rooms Needed" type="number">
+
+                 </mat-form-field>
+               </td>
+               <td>
+                 <mat-card-actions>
+                   <button mat-raised-button (click)="onRemoveRow(index)" color="warn">Remove</button>
+                 </mat-card-actions>
+
+               </td>
+             </tr>
+           </table>
+         </div>
+         <div class="input-row" fxLayout="row" fxLayout.lt-md="coloumn" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+           <mat-form-field fxFlex>
+             <input matInput placeholder="Budget for Hotel rooms" required formControlName="BudgetforHotelrooms"
+               type="number">
+             <span matPrefix>$&nbsp;</span>
+             <span matSuffix>.00</span>
+           </mat-form-field>
+           <mat-divider></mat-divider>
+         </div>
+       </div>
+
+       <mat-divider></mat-divider>
+       <div id="divFoodandBeverage" *ngIf="selectedservicesNeededByUser==='In-Office Catering Only' || selectedservicesNeededByUser==='Offsite' || selectedservicesNeededByUser==='Hotel Room & Catering' ">
+       <div id="divFoodandBeverage" class="left" >
+         <h4 class="left marginText" mat-subtitle>Food and Beverage*
+         </h4>
+
+         <div class="input-row" fxLayout="row" fxLayout.lt-md="coloumn" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+           <h4 class="left marginText">Are there food functions for meeting rooms required?
+           </h4>
+           <mat-radio-group class="example-radio-group left"
+             aria-label="Are there food functions for meeting rooms required?" formControlName="selectedFoodFunctions">
+             <mat-radio-button #order.id [value]="order.id" class="example-radio-button"
+               *ngFor="let order of FoodFunctions; let i = index" name="FoodFunctions"> {{order.name}}
+             </mat-radio-button>
+             <!--(change)="radioChange($event)"-->
+
+           </mat-radio-group>
+         </div>
+         <div class="input-row" fxLayout="row" fxLayout.lt-md="coloumn" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+           <h4 class="left marginText">Is a separate room needed for any meals? <br />
+             *see next section for off-site events
+           </h4>
+           <mat-radio-group class="example-radio-group left" aria-label="Is a separate room needed for any meals? 
+                *see next section for off-site events" formControlName="selectedSeparateRoomForMeals">
+             <mat-radio-button #order.id [value]="order.id" class="example-radio-button"
+               *ngFor="let order of SeparateRoomForMeals; let i = index" name="SeparateRoomForMeals"> {{order.name}}
+             </mat-radio-button>
+             <!--(change)="radioChange($event)"-->
+
+           </mat-radio-group>
+
+         </div>
+
+
+         <div class="input-row" fxLayout="column" fxLayout.lt-md="coloumn" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+
+            <h4 class="left marginText" mat-subtitle>Food and Beverage Requirements</h4>
+
+
+
+           <table class="example-full-width" cellspacing="0">
+             <thead>
+               <button mat-raised-button color="primary" (click)="onAddRowFoodandBeverage()"
+                   *ngIf="convFormControl.get('FoodandBeverageReqiurements')">Add Food and Beverage Requirements</button>
+                
+
+             </thead>
+             <tr *ngFor="let row of convFormControl.get('FoodandBeverageReqiurements')?.controls;let index = index;">
+               <td>
+
+                 <mat-form-field >
+                   <input matInput [formControl]="row.get('Day')" placeholder="Day/Date">
+                 </mat-form-field>
+               </td>
+               <td>
+                 <mat-form-field >
+                   <input matInput [formControl]="row.get('Date')" placeholder="Time/Type of Event">
+
+                 </mat-form-field>
+               </td>
+
+               <td>
+                 <mat-card-actions>
+                   <button mat-raised-button (click)="onRemoveFoodandBeverageRow(index)" color="warn">Remove</button>
+                 </mat-card-actions>
+               </td>
+             </tr>
+           </table>
+         </div>
+         <div class="input-row" fxLayout="row" fxLayout.lt-md="coloumn" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+           <mat-form-field fxFlex>
+             <input matInput placeholder="Budget for Food and beverage" required
+               formControlName="BudgetforFoodandBeverage" type="number">
+             <span matPrefix>$&nbsp;</span>
+             <span matSuffix>.00</span>
+           </mat-form-field>
+
+         </div>
+
+       </div>
+       <mat-divider></mat-divider>
+       <div id="divOffsiteDiners" class="left">
+         <h4 class="left marginText" mat-subtitle>Off-site Dinners
+         </h4>
+         <div class="input-row" fxLayout="row" fxLayout.lt-md="coloumn" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+           <h4 class="left marginText">Are there any requirements for off-site dinners, etc required?
+           </h4>
+           <mat-radio-group class="example-radio-group left"
+             aria-label="Are there any requirements for off-site dinners, etc required?"
+             formControlName="selectedOffsiteDiners">
+             <mat-radio-button #order.id [value]="order.id" class="example-radio-button"
+               *ngFor="let order of OffSiteDiners; let i = index" name="OffSiteDiners">
+               {{order.name}}
+             </mat-radio-button>
+             <!--(change)="radioChange($event)"-->
+
+           </mat-radio-group>
+         </div>
+         <div class="input-row" fxLayout="column" fxLayout.lt-md="coloumn" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+
+            <h4 class="left marginText" mat-subtitle>Special Event Requirements</h4>
+
+
+           <table class="example-full-width" cellspacing="0">
+             <thead>
+               <button mat-raised-button color="primary" (click)="onAddRowOffsiteDinersSpecial()"
+                   *ngIf="convFormControl.get('OffsiteDinersSpecialReqiurements')">Add Special Event Requirements</button>
+               
+
+             </thead>
+             <tr
+               *ngFor="let row of convFormControl.get('OffsiteDinersSpecialReqiurements')?.controls;let index = index;">
+               <td>
+
+                 <mat-form-field >
+                   <input matInput [formControl]="row.get('Day')" placeholder="Day/Date">
+                 </mat-form-field>
+               </td>
+               <td>
+                 <mat-form-field >
+                   <input matInput [formControl]="row.get('Date')" placeholder="Time/Type of Event" type="text">
+
+                 </mat-form-field>
+               </td>
+               <td>
+                 <mat-form-field >
+                   <input matInput [formControl]="row.get('NumberOfAttendees')" placeholder="# of attendees"
+                     type="number">
+
+                 </mat-form-field>
+               </td>
+
+               <td>
+                 <mat-card-actions>
+                   <button mat-raised-button (click)="onRemoveOffsiteDinersSpecialRow(index)"
+                     color="warn">Remove</button>
+                 </mat-card-actions>
+
+               </td>
+             </tr>
+           </table>
+         </div>
+         <div class="input-row" fxLayout="row" fxLayout.lt-md="coloumn" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+           <mat-form-field fxFlex>
+             <input matInput placeholder="Is there a preferred restaurant(s) in mind?" required
+               formControlName="OffsiteDinerPrefferedRestaurant" />
+           </mat-form-field>
+
+           <h4 class="left marginText">Is a private room required?
+           </h4>
+           <mat-radio-group class="example-radio-group left" aria-label="Is a private room required?"
+             formControlName="selectedOffisteDinerPrivateRoom">
+             <mat-radio-button #order.id [value]="order.id" class="example-radio-button"
+               *ngFor="let order of OffisteDinerPrivateRoom; let i = index" name="OffisteDinerPrivateRoom">
+               {{order.name}}
+             </mat-radio-button>
+             <!--(change)="radioChange($event)"-->
+
+           </mat-radio-group>
+
+           <h4 class="left marginText">Would a sectioned off area suffice?
+           </h4>
+           <mat-radio-group class="example-radio-group left" aria-label="Would a sectioned off area suffice?"
+             formControlName="selectedOffisteDinerSectionedOffArea">
+             <mat-radio-button #order.id [value]="order.id" class="example-radio-button"
+               *ngFor="let order of OffisteDinerSectionedOffArea; let i = index" name="OffisteDinerSectionedOffArea">
+               {{order.name}}
+             </mat-radio-button>
+             <!--(change)="radioChange($event)"-->
+
+           </mat-radio-group>
+
+
+         </div>
+         <div class="input-row" fxLayout="row" fxLayout.lt-md="coloumn" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+
+
+           <h4 class="left marginText">Type of restaurant desired?
+           </h4>
+           <mat-form-field fxFlex>
+             <mat-select formControlName="selectedRestaurantDesired" (selectionChange)="filterRestaurants($event)">
+               <mat-option *ngFor="let order of RestaurantDesiredList" [value]="order.id">
+                 {{order.name}}
+               </mat-option>
+             </mat-select>
+           </mat-form-field>
+
+          
+
+          
+           <span *ngIf="selectedRestaurantDesiredOther===true">
+             <mat-form-field fxFlex>
+               <input matInput placeholder="Restaraunt(s) Desired" *ngIf="selectedRestaurantDesiredOther===true"
+                 id="otherRestraunt" required formControlName="selectedRestaurantDesired" />
+             </mat-form-field>
+           </span>
+           <h4 class="left marginText">Menu desired?
+           </h4>
+           <mat-form-field fxFlex>
+             <mat-select formControlName="selectedMenuDesired">
+               <mat-option *ngFor="let order of MenuDesiredList" [value]="order.id">
+                 {{order.name}}
+               </mat-option>
+             </mat-select>
+           </mat-form-field>
+         </div>
+         <div class="input-row" fxLayout="row" fxLayout.lt-md="coloumn" fxLayoutGap="1px" fxLayoutGap.lt-md="0px">
+           <h4 class="left marginText">What type of event is this?
+           </h4>
+           <mat-form-field fxFlex>
+             <mat-select formControlName="selectedEventType" (selectionChange)="filterEventType($event)">
+               <mat-option *ngFor="let order of EventTypeList" [value]="order.id">
+                 {{order.name}}
+               </mat-option>
+             </mat-select>
+           </mat-form-field>
+
+
+           <span *ngIf="selectedEventTypeOther===true">
+             <mat-form-field fxFlex>
+               <input matInput placeholder="Restaraunt(s) Desired" *ngIf="selectedEventTypeOther===true"
+                 id="otherEventType" required formControlName="selectedEventType" />
+             </mat-form-field>
+           </span>
+
+           <h4 class="left marginText">Requirements on distance from hotel?
+           </h4>
+
+           <mat-radio-group class="example-radio-group left" aria-label="Requirements on distance from hotel?"
+             formControlName="selectedffisteDistanceFromHotel"  flex>
+             <mat-radio-button #order.id [value]="order.id" class="example-radio-button"
+               *ngFor="let order of OffisteDistanceFromHotel; let i = index" name="OffisteDistanceFromHotel">
+               {{order.name}}
+             </mat-radio-button>
+             <mat-radio-button [value]="other" name="Leave_from" class="example-radio-button">
+               <mat-form-field>
+                 <input matInput placeholder="Leave from" name="OffisteDistanceFromHotel"
+                   formControlName="selectedffisteDistanceFromHotel" style="margin-top: -10px;">
+               </mat-form-field>
+             </mat-radio-button>
+
+
+           </mat-radio-group>
+         </div>
+         <div class="input-row" fxLayout="row" fxLayout.lt-md="coloumn" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+           <mat-form-field fxFlex>
+             <textarea matInput placeholder="Other" formControlName="OtherOffSiteDiner"></textarea>
+
+           </mat-form-field>
+
+           <!-- <mat-radio-group fxLayout="column" name="goal_name"
+               [(ngModel)]="goalOption">
+                  <mat-radio-button *ngFor="let gn of goalNames" 
+                  name="goal_name" [value]="gn">{{gn}}</mat-radio-button>
+                  <mat-radio-button value="other" name="goal_name">
+                    <mat-form-field>
+                      <input matInput placeholder="Other" [(ngModel)]="customGoalName" (ngModelChange)="goalOption = 'other'" name="something">
+                    </mat-form-field>
+                  </mat-radio-button>
+            </mat-radio-group>-->
+         </div>
+
+
+       </div>
+
+
+       <mat-divider></mat-divider>
+
+
+
+       <div id="divMeetingSpace" class="left">
+         <h4 class="left marginText" mat-subtitle>Meeting Space
+         </h4>
+         <div class="input-row" fxLayout="row" fxLayout.lt-md="coloumn" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+           <h4 class="left marginText">Is meeting space required at the hotel?</h4>
+           <mat-radio-group class="example-radio-group left" aria-label="Is meeting space required at the hotel?"
+             formControlName="selectedMeetingSpaceHotel">
+             <mat-radio-button #order.id [value]="order.id" class="example-radio-button"
+               *ngFor="let order of MeetingSpaceHotel; let i = index" name="MeetingSpaceHotel">
+               {{order.name}}
+             </mat-radio-button>
+             <!--(change)="radioChange($event)"-->
+
+           </mat-radio-group>
+
+           <h4 class="left marginText">Is meeting space required at NADA?*</h4>
+           <mat-radio-group class="example-radio-group left" aria-label="Is meeting space required at NADA?*"
+             formControlName="selectedMeetingSpaceHotelNADA">
+             <mat-radio-button #order.id [value]="order.id" class="example-radio-button"
+               (change)="radioMeetingAtNADA($event)" *ngFor="let order of MeetingSpaceHotelNADA; let i = index"
+               name="MeetingSpaceHotelNADA">
+               {{order.name}}
+             </mat-radio-button>
+             <!--(change)="radioChange($event)"-->
+
+           </mat-radio-group>
+
+           <h4 class="left marginText" *ngIf="MeetingSpaceatNADALocation">If yes, select which location: </h4>
+           <mat-radio-group class="example-radio-group left" aria-label="If yes, select which location"
+             formControlName="selectedatNADALocation" *ngIf="MeetingSpaceatNADALocation">
+             <mat-radio-button #order.id [value]="order.id" class="example-radio-button"
+               *ngFor="let order of atNADALocation; let i = index" name="atNADALocation">
+               {{order.name}}
+             </mat-radio-button>
+             <!--(change)="radioChange($event)"-->
+
+           </mat-radio-group>
+
+         </div>
+         <div class="input-row" fxLayout="column" fxLayout.lt-md="coloumn" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+
+            <h4 class="left marginText" mat-subtitle>Meeting Room Requirements</h4>
+
+
+
+           <table class="example-full-width" cellspacing="0">
+             <thead>
+                <button mat-raised-button color="primary" (click)="onAddRowMeetingRoom()"
+                   *ngIf="convFormControl.get('MeetingRoomSpecialReqiurements')">Add Meeting Room Requirements</button>
+                
+             </thead>
+             <tr *ngFor="let row of convFormControl.get('MeetingRoomSpecialReqiurements')?.controls;let index = index;">
+               <td>
+
+                 <mat-form-field >
+                   <input matInput [formControl]="row.get('Day')" placeholder="Day/Date">
+                 </mat-form-field>
+               </td>
+               <td>
+                 <mat-form-field >
+                   <input matInput [formControl]="row.get('Date')" placeholder="Time/Type of Event" type="text">
+
+                 </mat-form-field>
+               </td>
+
+
+               <td>
+                 <mat-card-actions>
+                   <button mat-raised-button (click)="onRemoveRowMeetingRoomRow(index)" color="warn">Remove</button>
+                 </mat-card-actions>
+
+               </td>
+             </tr>
+           </table>
+         </div>
+         <div class="input-row" fxLayout="coloumn" fxLayout.lt-md="coloumn" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+           <h4 class="left marginText">Function Type: (check all that apply)
+           </h4>
+{{data.functionTypeList | json}}
+           <mat-list #list formArrayName="functionTypeList" fxLayout="row" fxFlex>
+             <mat-list-item *ngFor="let item of FunctionTypeData 
+                            let i = index;" >
+               <mat-checkbox [checked]="item.checked" (change)="onChange($event, i, item)"  >{{ item.name }}
+               </mat-checkbox>
+             </mat-list-item>
+             <mat-form-field *ngIf="FunctionTypeOther" fxLayout="row" fxFlex>
+                <input matInput placeholder="Other" name="FunctionTypeOther" formControlName="SelectedFunctionTypeOther">
+              </mat-form-field>
+           </mat-list>
+            
+             
+         </div>
+         <div class="input-row" fxLayout="coloumn" fxLayout.lt-md="coloumn" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+
+           <h4 class="left marginText">Set-up Requirements
+           </h4>
+         </div>
+         <div class="input-row" fxLayout="coloumn" fxLayout.lt-md="coloumn" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+
+           <mat-list #list formArrayName="setUpRequirementsData">
+             <mat-list-item *ngFor="let item of setUpRequirementsData 
+                            let i = index;" fxLayout="row" fxFlex>
+               <mat-checkbox [checked]="item.checked" (change)="onChangegetSetupRequirements($event, i, item)">
+                 {{ item.name }}</mat-checkbox>
+             </mat-list-item>
+
+           </mat-list>
+         </div>
+         <div class="input-row" fxLayout="row" fxLayout.lt-md="coloumn" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+           <h4 class="left marginText">Audiovisual
+           </h4>
+           <mat-radio-group class="example-radio-group left" aria-label="Audiovisual"
+             formControlName="selectedatAudiovisual" fxLayout="row" fxFlex>
+             <mat-radio-button #order.id [value]="order.id" class="example-radio-button"
+               *ngFor="let order of Audiovisual; let i = index" name="Audiovisual">
+               {{order.name}}
+             </mat-radio-button>
+
+           </mat-radio-group>
+         </div>
+         <div class="input-row" fxLayout="coloumn" fxLayout.lt-md="coloumn"  fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+
+
+           <h4 class="left marginText">AV Requirements
+           </h4>
+           <br/>
+
+           <h4 class="left marginText">Equipment: (check all that apply)
+           </h4>
+         </div>
+         <div class="input-row" fxLayout="row" fxLayout.lt-md="coloumn"  fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+           <mat-list #list formArrayName="equipmentData" fxLayout="row" fxFlex>
+             <mat-list-item *ngFor="let item of EquipmentData 
+                              let i = index;">
+               <mat-checkbox [checked]="item.checked" (change)="onChangeEquipment($event, i, item)">
+                 {{ item.name }} {{i}}<br/></mat-checkbox>
+             </mat-list-item>
+           </mat-list>
+         </div>
+         <div class="input-row" fxLayout="row" fxLayout.lt-md="coloumn" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+           <mat-form-field fxFlex>
+             <input matInput placeholder="Budget for Audio/visual" formControlName="BudgetforAudioVisual" type="number">
+             <span matPrefix>$&nbsp;</span>
+             <span matSuffix>.00</span>
+           </mat-form-field>
+         </div>
+       </div>
+
+       <mat-divider></mat-divider>
+       </div>
+
+       <div id="divTransportation" class="left" *ngIf="selectedservicesNeededByUser==='Hotel Rooms' || selectedservicesNeededByUser==='Hotel Room & Catering' || selectedservicesNeededByUser==='Offsite' ">
+         <h4 class="left marginText" mat-subtitle>Transportation
+         </h4>
+         <div class="input-row" fxLayout="row" fxLayout.lt-md="coloumn" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+
+           <h4>Do you require Transportation?</h4>
+           <mat-radio-group class="example-radio-group left" aria-label="Do you require Transportation? "
+             formControlName="selectedatTransportation">
+             <mat-radio-button #order.id [value]="order.id" class="example-radio-button"
+               *ngFor="let order of Transportation; let i = index" (change)="radioTransportationRequired($event)"
+               name="Transportation">
+               {{order.name}}
+             </mat-radio-button>
+
+           </mat-radio-group>
+
+
+           <h4 class="left marginText" *ngIf="TransportationRequired">If yes, for Individual(s) or Group or Both? </h4>
+           <mat-radio-group class="example-radio-group left" aria-label="If yes, select which location"
+             formControlName="selectedatTransportationType" *ngIf="TransportationRequired">
+             <mat-radio-button #order.id [value]="order.id" class="example-radio-button"
+               *ngFor="let order of TransportationType; let i = index" name="TransportationType"
+               (change)="radioTransportationDetails($event)">
+               {{order.name}}
+             </mat-radio-button>
+             <!--(change)="radioChange($event)"-->
+
+           </mat-radio-group>
+
+
+           <h4 class="left marginText" *ngIf="TransportationIndivdualType">Individual(s) list provided? </h4>
+           <mat-radio-group class="example-radio-group left" aria-label="Individual(s) list provided? 	"
+             formControlName="selectedTransportationListProvided" *ngIf="TransportationIndivdualType">
+             <mat-radio-button #order.id [value]="order.id" class="example-radio-button"
+               *ngFor="let order of TransportationListProvided; let i = index" name="TransportationListProvided">
+               {{order.name}}
+             </mat-radio-button>
+             <!--(change)="radioChange($event)"-->
+
+           </mat-radio-group>
+
+
+
+         </div>
+         <h4 class="left marginText" mat-subtitle>Location Details:
+         </h4>
+         <div class="input-row" fxLayout="row" fxLayout.lt-md="coloumn" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+
+
+           <h4 class="left marginText">Pick up location
+           </h4>
+           <mat-radio-group class="example-radio-group left" aria-label="Pick up location"
+             formControlName="selectedTransportationPickUpLocation">
+             <mat-radio-button #order.id [value]="order.id" class="example-radio-button"
+               *ngFor="let order of TransportationPickUpLocation; let i = index" name="TransportationPickUpLocation">
+               {{order.name}}
+             </mat-radio-button>
+             <mat-radio-button [value]="other" name="Other">
+               <mat-form-field>
+                 <input matInput placeholder="Leave from" name="selectedTransportationPickUpLocation"
+                   formControlName="selectedTransportationPickUpLocation">
+               </mat-form-field>
+             </mat-radio-button>
+           </mat-radio-group>
+         </div>
+         <div class="input-row" fxLayout="row" fxLayout.lt-md="coloumn" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+
+           <h4 class="left marginText">Dropoff location
+           </h4>
+           <mat-radio-group class="example-radio-group left" aria-label="Pick up location"
+             formControlName="selectedTransportationDropoffLocation">
+             <mat-radio-button #order.id [value]="order.id" class="example-radio-button"
+               *ngFor="let order of TransportationDropoffLocation; let i = index" name="TransportationDropoffLocation">
+               {{order.name}}
+             </mat-radio-button>
+             <mat-radio-button [value]="other" name="Other">
+               <mat-form-field>
+                 <input matInput placeholder="Leave from" name="OffisteDistanceFromHotel"
+                   formControlName="selectedTransportationDropoffLocation">
+               </mat-form-field>
+             </mat-radio-button>
+
+
+           </mat-radio-group>
+         </div>
+
+       </div>
+       <mat-divider></mat-divider>
+
+
+
+       <div id="divSignage" class="left" *ngIf="selectedservicesNeededByUser==='Hotel Rooms' || selectedservicesNeededByUser==='In-Office Catering Only' || selectedservicesNeededByUser==='Offsite'  || selectedservicesNeededByUser==='Hotel Room & Catering' ">
+         <h4 class="left marginText" mat-subtitle>Signage
+         </h4>
+         <div class="input-row" fxLayout="row" fxLayout.lt-md="coloumn" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+           <h4>Is signage needed?</h4>
+           <mat-radio-group class="example-radio-group left" aria-label="Is signage needed?"
+             formControlName="selectedSinage">
+             <mat-radio-button #order.id [value]="order.id" class="example-radio-button"
+               *ngFor="let order of Sinage; let i = index" name="Sinage">
+               {{order.name}}
+             </mat-radio-button>
+
+           </mat-radio-group>
+         </div>
+       </div>
+       <mat-divider></mat-divider>
+       <div id="divMisc" class="input-row" *ngIf="selectedservicesNeededByUser==='Hotel Rooms' || selectedservicesNeededByUser==='In-Office Catering Only' || selectedservicesNeededByUser==='Offsite'  || selectedservicesNeededByUser==='Hotel Room & Catering' ">
+         <h4 class="left marginText" mat-subtitle>Miscellaneous
+         </h4>
+         <div class="input-row" fxLayout="row" fxLayout.lt-md="coloumn" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+           <h4>Are badges required?</h4>
+           <mat-radio-group class="example-radio-group left" aria-label="Are badges required? "
+             formControlName="selectedMiscBadges">
+             <mat-radio-button #order.id [value]="order.id" class="example-radio-button"
+               *ngFor="let order of MiscBadges; let i = index" name="MiscBadges">
+               {{order.name}}
+             </mat-radio-button>
+
+           </mat-radio-group>
+
+           <h4>Are tent cards needed? </h4>
+           <mat-radio-group class="example-radio-group left" aria-label="Are tent cards needed?"
+             formControlName="selectedMiscTenentCards">
+             <mat-radio-button #order.id [value]="order.id" class="example-radio-button"
+               *ngFor="let order of MiscTenentCards; let i = index" name="MiscTenentCards">
+               {{order.name}}
+             </mat-radio-button>
+
+           </mat-radio-group>
+         </div>
+
+         <div class="input-row" fxLayout="row" fxLayout.lt-md="coloumn" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+
+           <mat-form-field fxFlex>
+             <textarea matInput placeholder="Other comments" required formControlName="OtherComments"></textarea>
+           </mat-form-field>
+         </div>
+       </div>
+
+
+       <div class="buttonHolder">
+         <button mat-raised-button color="primary" [disabled]="!convFormControl.valid"> Create</button> &nbsp;&nbsp;&nbsp;
+         <button type="button" mat-raised-button color="warn" (click)="onCancel()">Cancel</button>
+       </div>
+       <!--end -->
+     </div>
+
+
+     <!-- [disabled]="!convFormControl.valid" -->
+
+   </form>
+ </mat-card>

@@ -1,0 +1,63 @@
+<mat-drawer-container class="container" autosize>
+  <mat-drawer #drawer class="sidenav">
+
+    <button mat-raised-button routerLink="/">
+      <mat-icon>home</mat-icon>
+      <span>Meeting Requests</span>
+    </button>
+    <!--<button mat-raised-button routerLink="/meetings">
+      <mat-icon>save</mat-icon>
+      <span>Meetings</span>
+    </button>-->
+    <button mat-raised-button routerLink="/meetingrequest">
+      <mat-icon>add_box</mat-icon>
+      <span>Add Meeting Request</span>
+    </button>
+  </mat-drawer>
+</mat-drawer-container>
+  <div class="sidenav-content">
+    <mat-toolbar color="primary">
+      <mat-toolbar-row>
+       <!-- <button mat-icon-button (click)="drawer.toggle()">
+          <mat-icon>menu</mat-icon>
+        </button>-->
+ 
+ <span routerLink="/" style="cursor:pointer">NADA - Meeting Request App</span> 
+        <span class="spacer"></span>
+        <!--<mat-icon>favorite</mat-icon>-->
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+
+        <mat-menu #menu="matMenu">
+
+
+          <button mat-menu-item *ngIf="!auth.isAuthenticated" routerLink="/login">
+            <mat-icon>cloud</mat-icon>
+            <span>login</span>
+          </button>
+          <!--<button mat-button  *ngIf="!auth.isAuthenticated" routerLink="/register">Register</button>-->
+          <button mat-menu-item *ngIf="auth.isAuthenticated" routerLink="/profile">
+            <mat-icon>person</mat-icon>
+            <span> Welcome {{auth.name}}</span>
+          </button>
+          <button mat-menu-item *ngIf="auth.isAuthenticated" (click)="auth.logout()">
+            <mat-icon>power_settings_new</mat-icon> <span>Logout</span>
+          </button>
+
+        </mat-menu>
+      </mat-toolbar-row>
+    </mat-toolbar>
+
+ 
+  </div>
+
+  <mat-card class="homeCard button-row"   *ngIf="route.url != '/login'">
+      <mat-card-actions> 
+      <button mat-flat-button color="primary" routerLink="/" > Meeting Requests</button> 
+      <button mat-flat-button color="primary" routerLink="/meetingrequest">Add Meeting Request</button>
+      </mat-card-actions>
+      
+  </mat-card> 
+
+  <router-outlet></router-outlet>

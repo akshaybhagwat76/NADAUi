@@ -1,0 +1,267 @@
+<div class="example-container">
+    <mat-card class="cardList"  
+      *ngFor="let row of (meetingRequestWebService.meetingrequest  | async)  | keyvalue">
+  
+      <mat-card-title [routerLink]="['/updatemeeting', row.value.meetingId | json ]" style="cursor:pointer">
+        {{row.value.meetingRequestData.nameOfMeeting | json | replace:'"':''}} <mat-icon style="float: right;">edit
+        </mat-icon>
+      </mat-card-title>
+  
+      <mat-card-content>
+  
+        <p>Staff Contact: {{row.value.meetingRequestData.staffContact | json | replace:'"':''}}</p>
+        <p>Meeting Locations: {{row.value.meetingRequestData.selectedMeetingLocations | json | replace:'"':''}}</p>
+        <p>Attendance: {{row.value.meetingRequestData.attendance | json | replace:'"':''}}</p>
+        <p>Meeting Dates: {{row.value.meetingRequestData.meetingDates | json | replace:'"':''}}</p>
+       <!--  {{row.value | json}} -->  
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!--<div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="10px">
+    <div fxLayout.gt-md="row" fxLayout.lt-sm="column" fxLayoutGap="10px" fxFlex="100" fxFlex.gt-md="50"
+      *ngFor="let row of (meetingRequestWebService.meetingrequest  | async)  | keyvalue; let i = index"   >
+      <div fxFlex.lt-md="50" fxFlex.lt-sm="100" *ngIf=" i < 2  ">
+        <mat-card class="example-card">
+          <mat-card-header>
+            {{(i+1)%2}}
+
+            <mat-card-title [routerLink]="['/updatemeeting', row.value.meetingId | json ]" style="cursor:pointer">
+              {{row.value.meetingRequestData.nameOfMeeting | json | replace:'"':''}}
+            </mat-card-title>
+
+          </mat-card-header>
+
+          <mat-card-content>
+            <p>Staff Contact: {{row.value.meetingRequestData.staffContact | json | replace:'"':''}}</p>
+            <p>Meeting Locations: {{row.value.meetingRequestData.selectedMeetingLocations | json | replace:'"':''}}</p>
+            <p>Attendance: {{row.value.meetingRequestData.attendance | json | replace:'"':''}}</p>
+            <p>Meeting Dates: {{row.value.meetingRequestData.meetingDates | json | replace:'"':''}}</p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button [routerLink]="['/updatemeeting', row.value.meetingId | json ]" style="cursor:pointer">
+              <mat-icon style="float: right;">edit
+              </mat-icon>
+            </button>
+
+          </mat-card-actions>
+          {{i}}
+        </mat-card>
+      </div>
+      
+    </div>
+    <div fxLayout.gt-md="row" fxLayout.lt-sm="column" fxLayoutGap="10px" fxFlex="100" fxFlex.gt-md="50"
+      *ngFor="let row of (meetingRequestWebService.meetingrequest  | async)  | keyvalue; let i = index"   >
+      <div fxFlex.lt-md="50" fxFlex.lt-sm="100" *ngIf="i > 2 &&  i < 4  ">
+        <mat-card class="example-card">
+          <mat-card-header>
+            {{(i+1)%2}}
+
+            <mat-card-title [routerLink]="['/updatemeeting', row.value.meetingId | json ]" style="cursor:pointer">
+              {{row.value.meetingRequestData.nameOfMeeting | json | replace:'"':''}}
+            </mat-card-title>
+
+          </mat-card-header>
+
+          <mat-card-content>
+            <p>Staff Contact: {{row.value.meetingRequestData.staffContact | json | replace:'"':''}}</p>
+            <p>Meeting Locations: {{row.value.meetingRequestData.selectedMeetingLocations | json | replace:'"':''}}</p>
+            <p>Attendance: {{row.value.meetingRequestData.attendance | json | replace:'"':''}}</p>
+            <p>Meeting Dates: {{row.value.meetingRequestData.meetingDates | json | replace:'"':''}}</p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button [routerLink]="['/updatemeeting', row.value.meetingId | json ]" style="cursor:pointer">
+              <mat-icon style="float: right;">edit
+              </mat-icon>
+            </button>
+
+          </mat-card-actions>
+          {{i}}
+        </mat-card>
+      </div>
+      
+    </div>
+  </div>
+ 
+ 
+  <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="10px">
+      <div fxLayout.gt-md="row" fxLayout.lt-sm="column" fxLayoutGap="10px" fxFlex="100" fxFlex.gt-md="50">
+        <div fxFlex.lt-md="50" fxFlex.lt-sm="100">
+          <mat-card class="example-card">
+            <mat-card-header>
+              <div mat-card-avatar class="example-header-image"></div>
+              <mat-card-title>Shiba Inu</mat-card-title>
+              <mat-card-subtitle>Dog Breed</mat-card-subtitle>
+            </mat-card-header>
+             <mat-card-content>
+              <p>
+                The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
+                A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
+                bred for hunting.
+              </p>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-button>LIKE</button>
+              <button mat-button>SHARE</button>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+        <div fxFlex.lt-md="50" fxFlex.lt-sm="100">
+          <mat-card class="example-card">
+            <mat-card-header>
+              <div mat-card-avatar class="example-header-image"></div>
+              <mat-card-title>Shiba Inu</mat-card-title>
+              <mat-card-subtitle>Dog Breed</mat-card-subtitle>
+            </mat-card-header>
+             <mat-card-content>
+              <p>
+                The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
+                A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
+                bred for hunting.
+              </p>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-button>LIKE</button>
+              <button mat-button>SHARE</button>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+      </div>
+      <div fxLayout.gt-md="row" fxLayout.lt-sm="column" fxLayoutGap="10px" fxFlex="100" fxFlex.gt-md="50">
+        <div fxFlex.lt-md="50" fxFlex.lt-sm="100">
+          <mat-card class="example-card">
+            <mat-card-header>
+              <div mat-card-avatar class="example-header-image"></div>
+              <mat-card-title>Shiba Inu</mat-card-title>
+              <mat-card-subtitle>Dog Breed</mat-card-subtitle>
+            </mat-card-header>
+             <mat-card-content>
+              <p>
+                The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
+                A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
+                bred for hunting.
+              </p>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-button>LIKE</button>
+              <button mat-button>SHARE</button>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+        
+      </div>
+    </div>
+
+</div>
+
+<div class="example-container">
+  <mat-card class="cardList" style="width: 50%"
+    *ngFor="let row of (meetingRequestWebService.meetingrequest  | async)  | keyvalue">
+
+    <mat-card-title [routerLink]="['/updatemeeting', row.value.meetingId | json ]" style="cursor:pointer">
+      {{row.value.meetingRequestData.nameOfMeeting | json | replace:'"':''}} <mat-icon style="float: right;">edit
+      </mat-icon>
+    </mat-card-title>
+
+    <mat-card-content>
+
+      <p>Staff Contact: {{row.value.meetingRequestData.staffContact | json | replace:'"':''}}</p>
+      <p>Meeting Locations: {{row.value.meetingRequestData.selectedMeetingLocations | json | replace:'"':''}}</p>
+      <p>Attendance: {{row.value.meetingRequestData.attendance | json | replace:'"':''}}</p>
+      <p>Meeting Dates: {{row.value.meetingRequestData.meetingDates | json | replace:'"':''}}</p>
+       {{row.value | json}}   
+    </mat-card-content>
+  </mat-card>
+</div>-->
+<!--<form *ngIf="meetingRequestWebService.meetingrequest  | async; else loading" [formGroup]="form" (ngSubmit)="submit()">
+            <label for="firstname">First Name</label>
+            <input id="firstname" formControlName="firstName" />
+            <div *ngIf="form.controls.firstName.errors?.required && form.controls.firstName.touched" class="error">
+              *Required
+            </div>
+          
+            <label for="lastname">Last Name</label>
+            <input id="lastname" formControlName="lastName" />
+            <div *ngIf="form.controls.lastName.errors?.required && form.controls.lastName.touched" class="error">
+              *Required
+            </div>
+          
+            <label for="about">About</label>
+            <textarea id="about" formControlName="about"></textarea>
+          
+            <button [disabled]="!form.valid">Save Profile</button>
+          </form>
+
+          <span *ngIf=" data | async; else loading" >  {{data |json}}</span>
+ 
+          <form [formGroup]="convFormControl" >
+              <div class="example-container ">
+                <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="10px" fxLayoutGap.lt-md="0px" formGroupName="MeetingRequestData">
+                  <mat-form-field fxFlex>
+                    <input matInput placeholder="Name of Meeting" required formControlName="NameOfMeeting" />
+                  </mat-form-field>
+                  <mat-form-field fxFlex>
+                    <input matInput placeholder="mm/dd/yyyy – mm/dd/yyyy" required formControlName="MeetingDates" />
+                  </mat-form-field>
+                  <mat-form-field fxFlex>
+                    <input matInput placeholder="Staff Contact" required formControlName="StaffContact" />
+                  </mat-form-field>
+                  <mat-form-field fxFlex>
+                    <input matInput placeholder="Attendance (incl. staff)" required formControlName="Attendance" type="number" />
+                  </mat-form-field>
+                </div>
+                </div>
+          </form>
+          
+                   <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="10px">
+              <div fxLayout.gt-md="row" fxLayout.lt-sm="column" fxLayoutGap="10px" fxFlex="100" fxFlex.gt-md="50">
+                <div fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                  
+                </div>
+                <div fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                   
+                </div>
+              </div>
+          </div>
+
+          <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="10px">
+              <div fxLayout.gt-md="row" fxLayout.lt-sm="column" fxLayoutGap="10px" fxFlex="100" fxFlex.gt-md="50">
+                <div fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                  
+                </div>
+                <div fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                   
+                </div>
+              </div>
+          </div>
+          <ng-template #loading>
+              Loading User...
+            </ng-template>
+          
+          
+          
+          
+               <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="10px">
+                 <div fxLayout.gt-md="row" fxLayout.lt-sm="column" fxLayoutGap="10px" fxFlex="100" fxFlex.gt-md="50">
+                   <div fxFlex.lt-md="50" fxFlex.lt-sm="100">
+
+                   </div>
+                   <div fxFlex.lt-md="50" fxFlex.lt-sm="100">
+
+                   </div>
+                 </div>
+               </div>
+
+               <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="10px">
+                 <div fxLayout.gt-md="row" fxLayout.lt-sm="column" fxLayoutGap="10px" fxFlex="100" fxFlex.gt-md="50">
+                   <div fxFlex.lt-md="50" fxFlex.lt-sm="100">
+
+                   </div>
+                   <div fxFlex.lt-md="50" fxFlex.lt-sm="100">
+
+                   </div>
+                 </div>
+               </div>
+          
+          
+          -->
