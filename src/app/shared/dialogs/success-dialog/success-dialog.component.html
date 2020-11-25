@@ -2,7 +2,7 @@
   <h1 mat-dialog-title>Success message</h1>
   <mat-dialog-content>
     <p>Action completed successfully  </p>
-    <p> {{data}}</p>
+    <p *ngIf="data"> {{data}}</p>
   </mat-dialog-content>
   <mat-dialog-actions>
     <button mat-raised-button color="primary"

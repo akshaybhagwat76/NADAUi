@@ -30,8 +30,7 @@ import { ConfirmDialogComponent } from './dialogs/confirm-dialog/confirm-dialog.
   ],
   entryComponents: [
    SuccessDialogComponent,
-    ErrorDialogComponent,
-    ConfirmDialogComponent
+    ErrorDialogComponent,ConfirmDialogComponent
   ]
 })
 export class SharedModule { }

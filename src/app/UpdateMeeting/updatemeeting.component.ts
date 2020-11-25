@@ -11,6 +11,7 @@ import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { Location } from '@angular/common';
 import { ConfirmDialogComponent } from '../shared/dialogs/confirm-dialog/confirm-dialog.component';
+import { SuccessDialogComponent } from '../shared/dialogs/success-dialog/success-dialog.component';
 @Component({
     selector: 'updatemeeting',
     templateUrl: './updatemeeting.component.html',
@@ -131,8 +132,7 @@ export class UpdateMeetingComponent {
     slectedCheckBoxes = [];
     functionTypeOther: boolean;
     SelectedFunctionTypeOther: String;
-    listOfFiles = [];
-    meetingFile: any; AgendaFile: {};
+
     setUpRequirementsData = [];
     SetUpRequirementsslectedCheckBoxes = [];
 
@@ -171,12 +171,13 @@ export class UpdateMeetingComponent {
     selectedMiscTenentCards: String;
     OtherComments: String;
     updatedBy: String;
+    listOfFiles: any;
     agendaFileView: any; meetingFileView: any;
-
+    private dialogConfig: any;
     constructor(private fb: FormBuilder,
+        public dialog: MatDialog,
         private meetingRequestWebService: MeetingRequestWebService,
         private webService: WebService, private route: ActivatedRoute,
-        public dialog: MatDialog,
         private auth: AuthService, private location: Location) {
         this.hotelRoomReqiurements = this.fb.array([]);
         this.foodandBeverageReqiurements = this.fb.array([]);
@@ -185,6 +186,7 @@ export class UpdateMeetingComponent {
     }
 
     ngOnInit() {
+
         this.registrationForm = this.fb.group({
             meetingRequestData: new FormGroup({
                 nameOfMeeting: new FormControl(null, Validators.required),
@@ -305,7 +307,9 @@ export class UpdateMeetingComponent {
         console.log(name);
         this.routeName = name;
         if (name != null) {  //this.data.patchValue(this.meetingRequestWebService.getMeetingRequest(name));
+
             this.data = this.meetingRequestWebService.loadData(name);
+
 
             console.log(JSON.stringify(this.data));
             //   sessionStorage.setItem('meetingGuid', JSON.stringify());
@@ -315,12 +319,6 @@ export class UpdateMeetingComponent {
             sessionStorage.setItem('form', JSON.stringify(this.data));
             let formValues = sessionStorage.getItem('form');
             if (formValues != null) {
-                // if (data && data.files) {
-                //     this.agendaFileView = data.files.find(x => x.isAgendaFile == true);
-                //     this.meetingFileView = data.files.find(x => x.isAgendaFile == false);
-                //   }
-                debugger
-                this.agendaFileView = JSON.parse('{"fileName":"A-9~free_screen_recorder-21-11-2020 12.56.51 PM-362.zip","extension":null,"fileBytes":"https://dealeropsstorage.blob.core.windows.net/meetingslive/A-9~free_screen_recorder-21-11-2020%2012.56.51%20PM-362.zip","contentType":null,"isAgendaFile":true}');
                 var dataToload = JSON.parse(formValues);
                 this.fields = (dataToload.hotelRoomReqiurements);
                 const control = <FormArray>this.registrationForm.get('hotelRoomReqiurements');
@@ -496,8 +494,9 @@ export class UpdateMeetingComponent {
 
                 this.updatedBy = this.auth.name;
             }
+            let formData = this.meetingRequestWebService.getMeetingRequest(name);
 
-            this.registrationForm.patchValue(this.meetingRequestWebService.getMeetingRequest(name));
+            this.registrationForm.patchValue(formData);
             // this.data =  this.meetingRequestWebService.loadData(name).pipe(
             // tap(user => console.log(user))
 
@@ -506,8 +505,18 @@ export class UpdateMeetingComponent {
 
             if (formValues) {
                 var dataToload = JSON.parse(formValues);
+                debugger
+              
                 dataToload.updatedBy = this.auth.name;
                 this.applyFormValues(this.registrationForm, dataToload);
+                if (dataToload["files"] && dataToload["files"].length > 0) {
+
+                    this.agendaFileView = dataToload["files"].find(x => x.isAgendaFile == true);
+                    console.log('agenda file',this.agendaFileView)
+
+                    this.meetingFileView =dataToload["files"].find(x=>x.isAgendaFile===false);
+                    console.log('meeting file',this.meetingFileView)
+                }
                 /// updatecheckboxes
                 console.log(dataToload.meetingSpace.functionTypeList);
                 this.updatecheckboxes(dataToload.meetingSpace.functionTypeList)
@@ -517,6 +526,35 @@ export class UpdateMeetingComponent {
 
     }
 
+    removeFile(name) {
+        debugger
+        if (name && name.length > 0) {
+            this.removeFileConfirm(name);
+        }
+    }
+
+    downloadDataUrlFromJavascript(filename, dataUrl) {
+        debugger
+        document.location.href = dataUrl;
+    }
+
+    removeFileConfirm(fileName: string) {
+        let input: any = { "mode": null, "message": "" };
+        input.mode = "DELETE";
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+            width: '40%',
+            data: input
+        });
+        dialogRef.afterClosed().subscribe(action => {
+            if (action.mode === "DELETE") {
+                this.meetingRequestWebService.deleteFile(fileName);
+                var dialogConfig = {
+                    data: "File deleted succesfully."
+                }
+                let dialogRef = this.dialog.open(SuccessDialogComponent, dialogConfig);
+            }
+        })
+    }
 
     handelMeetingFileInput(event) {
         if (event.target.files && event.target.files[0]) {
@@ -532,7 +570,10 @@ export class UpdateMeetingComponent {
 
 
                 reader.onload = (event: any) => {
-                    if (this.listOfFiles.length > 0) {
+                    if (this.listOfFiles === undefined) {
+                        this.listOfFiles = [];
+                    }
+                    if (this.listOfFiles !== undefined && this.listOfFiles.length > 0) {
                         let index = this.listOfFiles.findIndex(x => x.IsAgendaFile == false);
                         if (index != -1) {
 
@@ -566,14 +607,17 @@ export class UpdateMeetingComponent {
 
                 reader.onload = (event: any) => {
                     debugger
-
-                    if (this.listOfFiles.length > 0) {
+                    if (this.listOfFiles === undefined) {
+                        this.listOfFiles = [];
+                    }
+                    if (this.listOfFiles !== undefined && this.listOfFiles.length > 0) {
                         let index = this.listOfFiles.findIndex(x => x.IsAgendaFile == true);
                         if (index != -1) {
 
                             this.listOfFiles.splice(index, 1);
                         }
                     }
+
                     this.listOfFiles.push({
                         FileName: fName,
                         ContentType: contentType,
@@ -586,7 +630,6 @@ export class UpdateMeetingComponent {
             }
         }
     }
-
     private updatecheckboxes(data: string[]) {
         console.log(data);
     }
@@ -611,53 +654,6 @@ export class UpdateMeetingComponent {
                 //f
             }
         });
-    }
-
-    removeFile(name) {
-        debugger
-        console.log('name', name);
-        this.removeFileConfirm(name)
-        // this.http.get('https://localhost:44369/' + 'api/weatherforecast/delete/' + name).subscribe((data: any) => {
-        //   console.log('data', data);
-        //   this.findMeeting1(2);
-        // })
-    }
-    removeFileConfirm(fileName: string) {
-        let input: any = { "mode": null, "message": "" };
-        input.mode = "DELETE";
-        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-            width: '40%',
-            data: input
-        });
-        dialogRef.afterClosed().subscribe(action => {
-            if (action.mode === "DELETE") {
-                alert('deleted')
-            }
-        })
-    }
-
-    downloadDataUrlFromJavascript(filename, dataUrl) {
-        debugger
-        console.log('name', filename);
-        console.log('url', dataUrl);
-        document.location.href = dataUrl;
-
-        //this.http.get('https://localhost:44369/' + 'api/weatherforecast/downloadfile/' + filename).subscribe((data: any) => {
-        //  console.log('data', data);
-        //  console.log(data);
-        //  if (data != null) {
-        //    const downloadedFile = new Blob([data.base64Data], { type: data.contentType });
-        //    const a = document.createElement('a');
-        //    a.setAttribute('style', 'display:none;');
-        //    document.body.appendChild(a);
-        //    a.download = name;
-        //    a.href = URL.createObjectURL(downloadedFile);
-        //    a.target = '_blank';
-        //    a.click();
-        //    document.body.removeChild(a);
-        //  } 
-        //})
-
     }
 
     /*handleNumberChange(val) {
@@ -1266,8 +1262,11 @@ export class UpdateMeetingComponent {
             }
             console.log("selectedatAudiovisual");
             console.log();
+            var Files = "Files";
+            let formData = this.registrationForm.value;
+            formData[Files] = this.listOfFiles;
 
-            this.meetingRequestWebService.putMeetingRequest(this.registrationForm.controls.id.value, this.registrationForm.value)
+            this.meetingRequestWebService.putMeetingRequest(this.registrationForm.controls.id.value, formData)
             //();
         }
         console.log(JSON.stringify(this.registrationForm.value));

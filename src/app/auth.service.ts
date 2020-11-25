@@ -6,7 +6,9 @@ import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
 @Injectable()
 export class AuthService{
-    BASE_URL= "https://meetingsliveapi.azurewebsites.net/auth";
+    // BASE_URL= "https://meetingsliveapi.azurewebsites.net/auth";
+    BASE_URL= "https://localhost:44330/";
+
     firstName_key ="firstName";
     lastName_key ="lastName";
     Token_key="token";

@@ -15,7 +15,7 @@ export class SuccessDialogComponent implements OnInit {
 
   
   constructor(public dialogRef: MatDialogRef<SuccessDialogComponent>, 
-    @Inject(MAT_DIALOG_DATA) public data: any) { }
+    @Inject(MAT_DIALOG_DATA) public data: any) {debugger }
   ngOnInit() {
   }
 

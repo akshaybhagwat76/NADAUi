@@ -7,7 +7,9 @@ import {AuthService} from './auth.service';
 import { Router } from '@angular/router';
 @Injectable()
    export class WebService{
-       BASE_URL= "https://meetingsliveapi.azurewebsites.net/";
+      //  BASE_URL= "https://meetingsliveapi.azurewebsites.net/";
+       BASE_URL= "https://localhost:44330/";
+
       private  messageStore= []; 
       private  messageSubject = new Subject();
       messages = this.messageSubject.asObservable();

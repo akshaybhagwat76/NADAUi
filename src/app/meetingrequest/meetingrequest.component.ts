@@ -39,10 +39,10 @@ export class MeetingRequestComponent {
     list = [];
     data2 = [];
     registrationForm: FormGroup;
-    listOfFiles = [];
-    meetingFile: any; AgendaFile: {};
+    agendaFile: any; meetingFile: any;
+    agendaFileView: any; meetingFileView: any;
+    listOfFile = [];
     CheckBoxProd: String;
-    isAgendaFile: boolean = false;
     ////
     HotelRoomReqiurements: FormArray;
     FoodandBeverageReqiurements: FormArray;
@@ -158,7 +158,7 @@ export class MeetingRequestComponent {
     MiscTenentCards = [];
     selectedMiscTenentCards: String;
     OtherComments: String;
-
+    listOfFiles: any;
 
     constructor(private fb: FormBuilder,
         private meetingRequestWebService: MeetingRequestWebService, private auth: AuthService,
@@ -486,76 +486,6 @@ export class MeetingRequestComponent {
 
     }
 
-    handelMeetingFileInput(event) {
-        this.isAgendaFile=false;
-        if (event.target.files && event.target.files[0]) {
-            var filesAmount = event.target.files.length;
-            for (let i = 0; i < filesAmount; i++) {
-                debugger
-                var last_dot = event.target.files[i].name.lastIndexOf('.');
-                var ext1 = "." + event.target.files[i].name.slice(last_dot + 1);
-
-                var fName = event.target.files[i].name.substr(0, event.target.files[i].name.lastIndexOf('.'));
-                var contentType = event.target.files[i].type;
-                var reader = new FileReader();
-
-
-                reader.onload = (event: any) => {
-                    if(this.listOfFiles.length>0){
-                        let index = this.listOfFiles.findIndex(x=>x.IsAgendaFile==false);
-                        if(index!=-1){
-
-                            this.listOfFiles.splice(index,1);
-                        }
-                    }
-                    this.listOfFiles.push({
-                        FileName: fName,
-                        ContentType: contentType,   
-                        Extension: ext1,
-                        FileBytes: event.target.result,
-                        IsAgendaFile: false
-                    })
-                };
-                reader.readAsDataURL(event.target.files[i]);
-            }
-        }
-    }
-    handelAgendaFileInput(event) {
-        this.isAgendaFile=true;
-        if (event.target.files && event.target.files[0]) {
-            var filesAmount = event.target.files.length;
-            for (let i = 0; i < filesAmount; i++) {
-                debugger
-                var last_dot = event.target.files[i].name.lastIndexOf('.');
-                var ext1 = "." + event.target.files[i].name.slice(last_dot + 1);
-
-                var fName = event.target.files[i].name.substr(0, event.target.files[i].name.lastIndexOf('.'));
-                var contentType = event.target.files[i].type;
-                var reader = new FileReader();
-
-
-                reader.onload = (event: any) => {
-                    debugger
-
-                    if(this.listOfFiles.length>0){
-                        let index = this.listOfFiles.findIndex(x=>x.IsAgendaFile==true);
-                        if(index!=-1){
-
-                            this.listOfFiles.splice(index,1);
-                        }
-                    }
-                    this.listOfFiles.push({
-                        FileName: fName,
-                        ContentType: contentType,   
-                        Extension: ext1,
-                        FileBytes: event.target.result,
-                        IsAgendaFile: true
-                    })
-                };
-                reader.readAsDataURL(event.target.files[i]);
-            }
-        }
-    }
     private applyFormValues(group, formValues) {
         Object.keys(formValues).forEach(key => {
             let formControl = <FormControl>group.controls[key];
@@ -574,6 +504,80 @@ export class MeetingRequestComponent {
             }
         });
     }
+    handelMeetingFileInput(event) {
+        if (event.target.files && event.target.files[0]) {
+            var filesAmount = event.target.files.length;
+            for (let i = 0; i < filesAmount; i++) {
+                debugger
+                var last_dot = event.target.files[i].name.lastIndexOf('.');
+                var ext1 = "." + event.target.files[i].name.slice(last_dot + 1);
+
+                var fName = event.target.files[i].name.substr(0, event.target.files[i].name.lastIndexOf('.'));
+                var contentType = event.target.files[i].type;
+                var reader = new FileReader();
+
+
+                reader.onload = (event: any) => {
+                    if (this.listOfFiles === undefined) {
+                        this.listOfFiles = [];
+                    }
+                    if (this.listOfFiles !== undefined && this.listOfFiles.length > 0) {
+                        let index = this.listOfFiles.findIndex(x => x.IsAgendaFile == false);
+                        if (index != -1) {
+
+                            this.listOfFiles.splice(index, 1);
+                        }
+                    }
+                    this.listOfFiles.push({
+                        FileName: fName,
+                        ContentType: contentType,
+                        Extension: ext1,
+                        FileBytes: event.target.result,
+                        IsAgendaFile: false
+                    })
+                };
+                reader.readAsDataURL(event.target.files[i]);
+            }
+        }
+    }
+    handelAgendaFileInput(event) {
+        if (event.target.files && event.target.files[0]) {
+            var filesAmount = event.target.files.length;
+            for (let i = 0; i < filesAmount; i++) {
+                debugger
+                var last_dot = event.target.files[i].name.lastIndexOf('.');
+                var ext1 = "." + event.target.files[i].name.slice(last_dot + 1);
+
+                var fName = event.target.files[i].name.substr(0, event.target.files[i].name.lastIndexOf('.'));
+                var contentType = event.target.files[i].type;
+                var reader = new FileReader();
+
+
+                reader.onload = (event: any) => {
+                    debugger
+                    if (this.listOfFiles === undefined) {
+                        this.listOfFiles = [];
+                    }
+                    if (this.listOfFiles !== undefined && this.listOfFiles.length > 0) {
+                        let index = this.listOfFiles.findIndex(x => x.IsAgendaFile == true);
+                        if (index != -1) {
+
+                            this.listOfFiles.splice(index, 1);
+                        }
+                    }
+
+                    this.listOfFiles.push({
+                        FileName: fName,
+                        ContentType: contentType,
+                        Extension: ext1,
+                        FileBytes: event.target.result,
+                        IsAgendaFile: true
+                    })
+                };
+                reader.readAsDataURL(event.target.files[i]);
+            }
+        }
+    }
     public SaveChanges = (registrationForm) => {
 
         this.registrationForm.controls.MeetingSpace.value.FunctionTypeList = this.slectedCheckBoxes;
@@ -590,19 +594,24 @@ export class MeetingRequestComponent {
             }
             console.log("selectedatAudiovisual");
             console.log(this.selectedatAudiovisual);
-            let formData = this.registrationForm.value; let File = "File";
-            console.log(this.listOfFiles);
-            //this.meetingRequestWebService.postMeetingRequest(this.registrationForm.value);
+            console.log('agenda', this.agendaFile);
+            console.log('meeting', this.meetingFile);
+            debugger
+            // if (this.agendaFile) {
+            //     this.listOfFile.push(this.agendaFile);
+            // }
+            // if (this.meetingFile) {
+            //     this.listOfFile.push(this.meetingFile);
+            // }
+            var Files = "Files";
+            let formData = this.registrationForm.value;
+            formData[Files] = this.listOfFiles;
+            this.meetingRequestWebService.postMeetingRequest(formData);
         }
         console.log(JSON.stringify(this.registrationForm.value));
 
     }
-    isObjectEmpty(value) {
-        return (
-            Object.prototype.toString.call(value) === '[object Object]' &&
-            JSON.stringify(value) === '{}'
-        );
-    }
+
 
     getCheckBoxes() {
         return [
